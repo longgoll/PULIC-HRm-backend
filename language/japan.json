@@ -1,0 +1,6 @@
+{
+    "message_error": "Vui lòng thử lại sau",
+    "missing_email":"あなたのメールアドレスを入力してください",
+    "missing_password":"パスワードを入力して下さい",
+    "email_illegal":"Email không hợp lệ"
+}

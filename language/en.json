@@ -1,0 +1,21 @@
+{
+    "message_error": "Please try again later",
+    "missing_email":"Please enter your email",
+    "missing_password":"Please enter a password",
+    "email_illegal":"Invalid email",
+    "binding_password":"Password must be at least 8 characters",
+    "email_exists": "This email is already registered",
+    "SignUp_success": "Successful account registration",
+    "Account_exist":"Account does not exist",
+    "password_wrong": "Please check your password again",
+    "login_success": "Logged in successfully",
+    "unauthenticated":"We can't authenticate",
+    "unauthenticated_RFtoken":"Invalid token",
+    "Check2FA":"Please enable secure two-factor authentication",
+    "TurnOn_2FA_success":"Turn on two layers of security successfully",
+    "TurnOff_2FA_success":"Turn off two layers of security successfully",
+    "Enter_Auth_Code_2FA":"Please enter the verification code",
+    "Auth_successful_2FA":"Authentication successful",
+    "Auth_unsuccessful_2FA":"Authentication failed",
+    "Insufficient_authority": "Insufficient permission to execute"
+}

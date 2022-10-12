@@ -1,0 +1,21 @@
+{
+    "message_error": "Vui lòng thử lại sau",
+    "missing_email":"vui lòng nhập email",
+    "missing_password":"Vui lòng nhập mật khẩu",
+    "email_illegal":"Email không hợp lệ",
+    "binding_password":"Mật khẩu ít nhất phải có 8 ký tự",
+    "email_exists": "Email này đã được đăng ký",
+    "SignUp_success": "Đăng ký tài khoản thành công",
+    "Account_exist":"Tài khoản không tồn tại",
+    "password_wrong": "Vui lòng kiểm tra lại mật khẩu",
+    "login_success": "Đăng nhập thành công",
+    "unauthenticated":"Chúng tôi không thể xác thực",
+    "unauthenticated_RFtoken":"Token không hợp lệ",
+    "Check2FA":"Vui lòng bật xác thực hai lớp bảo mật",
+    "TurnOn_2FA_success":"Bật hai lớp bảo mật thành công",
+    "TurnOff_2FA_success":"Tắt hai lớp bảo mật thành công",
+    "Enter_Auth_Code_2FA":"Vui lòng nhập mã xác thực",
+    "Auth_successful_2FA":"Xác thực thành công",
+    "Auth_unsuccessful_2FA":"Xác thực không thành công",
+    "Insufficient_authority": "Không đủ quyền để thực hiện"
+}
