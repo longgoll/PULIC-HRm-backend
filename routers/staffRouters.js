@@ -37,6 +37,20 @@ router.post(
   middlewareController.verifyToken,
   staffControllers.getAllStaff
 );
+//lấy tất cả nhân viên EX
+router.get(
+  "/get-staff-ex",
+  middlewareController.verifyToken,
+  staffControllers.getAllSEX
+);
+
+//lấy tất cả nhân viên EX number
+router.get(
+  "/get-staff-ex-number",
+  middlewareController.verifyToken,
+  staffControllers.getAllSEXNumber
+);
+
 //lấy thông tin nhân viên
 router.get(
   "/get-staff/:id",
@@ -60,6 +74,13 @@ router.post(
   "/search-staff-name",
   middlewareController.verifyToken,
   staffControllers.searchStaffByName
+);
+
+//bo loc
+router.post(
+  "/filter",
+  middlewareController.verifyToken,
+  staffControllers.filter
 );
 
 module.exports = router;

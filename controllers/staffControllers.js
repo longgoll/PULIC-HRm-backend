@@ -538,6 +538,32 @@ const staffContronller = {
     }
   },
 
+  //laays all nhan vien xuat EX
+  getAllSEX: async (req, res) => {
+    try {
+      const data = await StaffModel.find();
+
+      return res.status(200).json({ success: true, data });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+
+  //laays all nhan vien xuat EX so
+  getAllSEXNumber: async (req, res) => {
+    try {
+      const data = await StaffModel.find().count();
+
+      return res.status(200).json({ success: true, data });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+
   //lấy thông tin chi tiết nhân viên
   getStaff: async (req, res) => {
     const id = req.params.id;
@@ -564,7 +590,7 @@ const staffContronller = {
 
     try {
       const data = await StaffModel.findById(
-        { _id:id },
+        { _id: id },
         {
           numberNV: 1,
           nameStaff: 1,
@@ -632,6 +658,62 @@ const staffContronller = {
         .json({ success: true, data: dataStaff, totalPage: 1 });
     } catch (error) {
       console.log(error);
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+
+  filter: async (req, res) => {
+    const { group, department, companyBranch, statusWorking, Working } =
+      req.body;
+
+    if (!group || !department || !companyBranch || !statusWorking || !Working) {
+      return res
+        .status(400)
+        .json({ success: false, message: "vui lòng nhập đủ dữ liệu" });
+    }
+
+    try {
+      if (
+        group === "All" &&
+        department === "All" &&
+        companyBranch === "All" &&
+        statusWorking === "All" &&
+        Working === "All"
+      ) {
+        const data = await StaffModel.find({});
+
+        return res.status(200).json({ success: true, data });
+      } else {
+        var keys = [
+          "group",
+          "department",
+          "companyBranch",
+          "statusWorking",
+          "Working",
+        ];
+        let values = [group, department, companyBranch, statusWorking, Working];
+        var map = new Map();
+        var arrayF = [];
+        //
+        for (var i = 0; i < keys.length; i++) {
+          map.set(keys[i], values[i]);
+        }
+        //
+        // Printing
+        for (var key of map.keys()) {
+          if (map.get(key) !== "All") {
+            arrayF.push(key);
+            console.log(key);
+          }
+        }
+
+        const data = await StaffModel.find({ companyBranch, department });
+
+        return res.status(200).json({ success: true, data });
+      }
+    } catch (error) {
       return res
         .status(500)
         .json({ success: false, message: vi.message_error });

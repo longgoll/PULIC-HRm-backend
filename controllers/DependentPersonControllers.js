@@ -242,6 +242,31 @@ const DependentPersonControllers = {
     }
   },
 
+  //lay tất cả xuất EX
+  getAllEX: async (req, res) => {
+    try {
+      const data = await DependentPersonModel.find()
+
+      return res.status(200).json({success: true, data})
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+
+  getAllEXNumber: async (req, res) => {
+    try {
+      const data = await DependentPersonModel.find().count()
+
+      return res.status(200).json({success: true, data})
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+
   getAllbyIDStaff: async (req, res) => {
     const id = req.params.id;
 

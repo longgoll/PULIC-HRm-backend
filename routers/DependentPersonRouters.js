@@ -23,6 +23,19 @@ router.post(
   DependentPersonControllers.getAllpage
 );
 
+//lay tat ca du lieu xuat file
+router.get(
+  "/get-dependent-person-ex",
+  middlewareController.verifyToken,
+  DependentPersonControllers.getAllEX
+);
+//lay tat ca du lieu xuat file so
+router.get(
+  "/get-dependent-person-ex-number",
+  middlewareController.verifyToken,
+  DependentPersonControllers.getAllEXNumber
+);
+
 //lay theo id của nhân viên
 router.get(
   "/get-by-id-staff-dependent-person/:id",
