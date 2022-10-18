@@ -83,4 +83,33 @@ router.post(
   staffControllers.filter
 );
 
+//xuất EX ra những thông tin cần thiết
+router.get(
+  "/get-staff-ex-custom1",
+  middlewareController.verifyToken,
+  staffControllers.EXcustom1
+);
+
+//cộng số người phụ thuộc
+router.post(
+  "/sum-dependent/:id",
+  middlewareController.verifyToken,
+  staffControllers.SumDependent
+);
+
+//cặp nhật lại số người phụ thuộc
+router.post(
+  "/update-sum-dependent/:id",
+  middlewareController.verifyToken,
+  staffControllers.updateSumDependent
+);
+
+//==========================================
+//liệt kê người trong nhóm
+router.post(
+  "/get-group-staff",
+  middlewareController.verifyToken,
+  staffControllers.getGroupStaff
+);
+
 module.exports = router;

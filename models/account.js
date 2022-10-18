@@ -21,6 +21,21 @@ const AccountSchema = new Schema({
         hex: String,
         base32: String,
         otpauth_url: String
+    },
+    role: {
+        type: String,
+        query: true,
+        default: 'QA'
+    },
+    Name: {
+        type: String,
+        query: true,
+        default: 'AccountHRM'
+    },
+    islock: {
+        type: Boolean,
+        query: true,
+        default: false
     }
 }, { timestamps: true });
 //

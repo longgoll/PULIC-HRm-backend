@@ -124,7 +124,7 @@ router.delete(
 
 //===
 //get-all nhóm
-router.get(
+router.post(
   "/get-all-group",
   middlewareController.verifyToken,
   companyControllers.getAllGroup
@@ -138,21 +138,21 @@ router.post(
 
 //đọc tên nhóm theo cty chi nhánh phòng ban
 router.post(
-  "/get-group-bychir/",
+  "/get-group-bychir",
   middlewareController.verifyToken,
   companyControllers.GroupByChi
 );
 
 //lấy nhóm theo mõi phòng ban
 router.post(
-  "/get-group-only/",
+  "/get-group-only",
   middlewareController.verifyToken,
   companyControllers.getGroupOnly
 );
 
 //tạo nhóm
 router.post(
-  "/create-group/",
+  "/create-group",
   middlewareController.verifyToken,
   companyControllers.createGroup
 );

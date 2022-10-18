@@ -37,6 +37,7 @@ const staffContronller = {
     // const langIndex = req.lang
     const {
       //   numberID,
+      familyCircumstances,
       typeCardID,
       numberNV,
       sexStaff,
@@ -86,6 +87,7 @@ const staffContronller = {
       NamecompanyBranch,
       Namedepartment,
       Namegroup,
+      ExcerptBHXH,
     } = req.body;
 
     if (!numberNV) {
@@ -170,7 +172,7 @@ const staffContronller = {
       const numberID = dataCount.CountStaffID + 1;
 
       const newStaff = await new StaffModel({
-        // familyCircumstances,
+        familyCircumstances,
         typeCardID,
         numberID,
         numberNV,
@@ -221,6 +223,7 @@ const staffContronller = {
         NamecompanyBranch,
         Namedepartment,
         Namegroup,
+        ExcerptBHXH: 0.1 * PaymentRateBHXH,
       });
 
       await newStaff.save();
@@ -240,6 +243,7 @@ const staffContronller = {
   //cập nhật lại nhân viên
   updataStaff: async (req, res) => {
     const {
+      familyCircumstances,
       typeCardID,
       numberNV,
       sexStaff,
@@ -289,6 +293,7 @@ const staffContronller = {
       NamecompanyBranch,
       Namedepartment,
       Namegroup,
+      ExcerptBHXH,
     } = req.body;
     const id = req.params.id;
 
@@ -373,6 +378,7 @@ const staffContronller = {
       await StaffModel.findByIdAndUpdate(
         { _id: id },
         {
+          familyCircumstances,
           typeCardID,
           numberNV,
           sexStaff,
@@ -422,6 +428,7 @@ const staffContronller = {
           NamecompanyBranch,
           Namedepartment,
           Namegroup,
+          ExcerptBHXH: 0.1 * PaymentRateBHXH,
         }
       );
 
@@ -713,6 +720,119 @@ const staffContronller = {
 
         return res.status(200).json({ success: true, data });
       }
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+
+  //xuất ra file EX tùy chỉnh 01
+  EXcustom1: async (req, res) => {
+    try {
+      const data = await StaffModel.find(
+        {},
+        {
+          _id: 0,
+          numberNV: 1,
+          nameStaff: 1,
+          Company: 1,
+          companyBranch: 1,
+          department: 1,
+          group: 1,
+          BasicSalary: 1,
+          Working: 1,
+          PaymentRateBHXH: 1,
+          ExcerptBHXH: 1,
+          BankNumberAccount: 1,
+          BankNameUserAccount: 1,
+          BankNameAccount: 1,
+          familyCircumstances: 1,
+        }
+      );
+
+      return res.status(200).json({ success: true, data });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+
+  //cộng số người phụ thuộc cho nhân viên
+  SumDependent: async (req, res) => {
+    const id = req.params.id;
+
+    try {
+      const data = await StaffModel.findById(
+        { _id: id },
+        { familyCircumstances: 1, _id: 0 }
+      );
+
+      await StaffModel.findByIdAndUpdate(
+        { _id: id },
+        { familyCircumstances: data.familyCircumstances + 1 }
+      );
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Cập nhật thành công" });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+  //update số người phụ thuộc cho nhân viên
+  updateSumDependent: async (req, res) => {
+    const id = req.params.id;
+
+    try {
+      const data = await StaffModel.findById(
+        { _id: id },
+        { familyCircumstances: 1, _id: 0 }
+      );
+
+      await StaffModel.findByIdAndUpdate(
+        { _id: id },
+        { familyCircumstances: data.familyCircumstances - 1 }
+      );
+
+      return res
+        .status(200)
+        .json({ success: true, message: "Cập nhật thành công" });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+  //lấy tất cả người trong nhóm
+  getGroupStaff: async (req, res) => {
+    const { Company, companyBranch, department, group } = req.body;
+
+    if(!Company){
+      return res.status(401).json({message:'Vui lòng chọn công ty'})
+    }
+    if(!companyBranch){
+      return res.status(401).json({message:'Vui lòng chọn chi nhánh'})
+    }
+    if(!department){
+      return res.status(401).json({message:'Vui lòng chọn phòng ban'})
+    }
+    if(!group){
+      return res.status(401).json({message:'Vui lòng chọn nhóm'})
+    }
+    
+    try {
+      const data = await StaffModel.find({
+        Company,
+        companyBranch,
+        department,
+        group,
+      });
+
+      return res.status(200).json({ success: true, data });
     } catch (error) {
       return res
         .status(500)

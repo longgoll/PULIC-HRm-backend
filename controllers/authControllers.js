@@ -55,14 +55,16 @@ const authControllers = {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
     if (!email.match(mailformat)) {
-      return res.status(400).json({ success: false, message: "" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Không đúng định dạng email" });
     }
 
     //check pass
     if (password.length < 8) {
       return res.status(400).json({
         success: false,
-        message: "",
+        message: "mật khẩu phải trên 8 ký tự",
       });
     }
 
@@ -73,7 +75,7 @@ const authControllers = {
       if (User > 0) {
         return res
           .status(400)
-          .json({ success: false, message: langArray[langIndex].email_exists });
+          .json({ success: false, message: "Tài khoản đã tồn tại" });
       }
       //Tao mã sác thực 2 lớp
       // Create temporary secret until it it verified
@@ -90,6 +92,9 @@ const authControllers = {
       const newUser = new AccountModule({
         email,
         password: hashPassword,
+        role,
+        Name,
+        islock,
         secret: {
           ascii: temp_secret.ascii,
           hex: temp_secret.hex,
@@ -110,17 +115,18 @@ const authControllers = {
 
   //đăng kí tài khoản
   registerAccount: async (req, res) => {
-    const langIndex = req.lang;
-    const { email, password } = req.body;
+    const { email, password, role, Name } = req.body;
 
     if (!email) {
-      return res.status(400).json({ success: false, message: "" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Vui lòng nhập email" });
     }
 
     if (!password) {
       return res.status(400).json({
         success: false,
-        message: langArray[langIndex].missing_password,
+        message: "Vui lòng nhập mật khẩu",
       });
     }
 
@@ -128,14 +134,16 @@ const authControllers = {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
     if (!email.match(mailformat)) {
-      return res.status(400).json({ success: false, message: "" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Không đúng định dạng email" });
     }
 
     //check pass
     if (password.length < 8) {
       return res.status(400).json({
         success: false,
-        message: "",
+        message: "Mật khẩu phải trên 8 ký tự",
       });
     }
 
@@ -144,7 +152,9 @@ const authControllers = {
       const User = await AccountModule.findOne({ email }).count();
 
       if (User > 0) {
-        return res.status(400).json({ success: false, message: "" });
+        return res
+          .status(400)
+          .json({ success: false, message: "Tài khoản đã tồn tại" });
       }
       //Tao mã sác thực 2 lớp
       // Create temporary secret until it it verified
@@ -161,6 +171,9 @@ const authControllers = {
       const newUser = new AccountModule({
         email,
         password: hashPassword,
+        role,
+        Name,
+        // islock,
         secret: {
           ascii: temp_secret.ascii,
           hex: temp_secret.hex,
@@ -171,8 +184,9 @@ const authControllers = {
       //luu vao DB
       await newUser.save();
 
-      return res.status(201).json({ success: true, message: "tao thanh cong" });
+      return res.status(201).json({ success: true, message: "Tạo thành công" });
     } catch (error) {
+      // console.log(error);
       return res
         .status(500)
         .json({ success: false, message: vi.message_error });
@@ -181,6 +195,7 @@ const authControllers = {
 
   //đăng nhập
   loginAccount: async (req, res) => {
+    // console.log('co ');
     const { email, password } = req.body;
     // const langIndex = req.lang
 

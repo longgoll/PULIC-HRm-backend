@@ -3,9 +3,6 @@ const router = express.Router();
 
 const authControllers = require("../controllers/authControllers");
 const middlewareController = require("../controllers/middlewareController");
-const middlewareLanguage = require("../controllers/middlewareLanguage");
-//viet tắt middlewar
-const Language = middlewareLanguage.verifyCookiesLanguage;
 
 //đăng kí tài khoản tesst
 router.get("/test", authControllers.test);
@@ -51,8 +48,7 @@ router.post(
   authControllers.check2FA,
   authControllers.validate
 );
-//cấp lại ngôn ngữ mơi
-router.post("/change-language", middlewareLanguage.getNewCookieLanguage);
+
 //xác thực login
 router.post("/accuracy-login", authControllers.accuracylogin);
 module.exports = router;

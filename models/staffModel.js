@@ -222,7 +222,7 @@ const StaffSchema = new Schema(
     },
     //số TK ngân hàng
     BankNumberAccount: {
-      type: Number,
+      type: String,
       query: true,
     },
     //Lương cơ bản
@@ -233,6 +233,11 @@ const StaffSchema = new Schema(
     //Mức đóng BHXH
     PaymentRateBHXH: {
       type: Number,
+      query: true,
+    },
+    //Trích BHXH
+    ExcerptBHXH: {
+      type: String,
       query: true,
     },
     //Ngày báo tăng BHXH
@@ -270,6 +275,7 @@ const StaffSchema = new Schema(
       type: String,
       query: true,
     },
+    //
   },
   { timestamps: true }
 );

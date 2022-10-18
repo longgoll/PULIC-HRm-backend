@@ -10,8 +10,10 @@ const authRouter = require("./routers/authRouters");
 const staffRouter = require("./routers/staffRouters");
 const companyRouters = require("./routers/companyRouters");
 const workScheduleRouter = require("./routers/workScheduleRouter");
-const titleStaffRouters = require("./routers/titleStaffRouters")
-const DependentPersonRouters = require("./routers/DependentPersonRouters")
+const titleStaffRouters = require("./routers/titleStaffRouters");
+const DependentPersonRouters = require("./routers/DependentPersonRouters");
+const bankControllers = require("./routers/bankControllers");
+const statisticalRouters = require("./routers/statisticalRouters")
 
 dotenv.config();
 
@@ -53,7 +55,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 io.on("connection", (socket) => {
-//   socket.id = "dawdhiuahidawd"+1;
+  //   socket.id = "dawdhiuahidawd"+1;
   console.log(`User Connected: ${socket.id}`);
   socket.on("disconnect", () => {
     console.log("ngat ket noi: " + socket.id);
@@ -79,6 +81,8 @@ app.use("/api/v1", companyRouters);
 app.use("/api/v1", workScheduleRouter);
 app.use("/api/v1", titleStaffRouters);
 app.use("/api/v1", DependentPersonRouters);
+app.use("/api/v1", bankControllers);
+app.use("/api/v1", statisticalRouters);
 
 //===============================================================
 server.listen(process.env.PORT || process.env.PORT, () => {
