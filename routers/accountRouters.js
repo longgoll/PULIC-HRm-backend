@@ -6,6 +6,12 @@ const middlewareController = require('../controllers/middlewareController')
 
 //Láy tất cả tài khoản
 router.get('/all-user', middlewareController.verifyToken, accountController.getAllAccount)
+//xóa tài khoản
+router.delete('/del-user/:id', middlewareController.verifyToken, accountController.DelAccount)
+//khóa tài khoản
+router.post('/lock-user/:id', middlewareController.verifyToken, accountController.lockAccount)
+//reset tài khoản
+router.post('/reset-user/:id', middlewareController.verifyToken, accountController.resetAccount)
 
 
 module.exports = router
