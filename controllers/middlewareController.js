@@ -44,11 +44,11 @@ const middlewareCntroller = {
     //veriffyToken Admin
     verifyTokenAndAdminAuth: (req, res, next) => {
         middlewareCntroller.verifyToken(req, res, () => {
-            if (req.user.role == 'admin') {
+            if (req.user.role == 'Admin') {
                 next()
             }
             else {
-                return res.status(403).json({ success: false, message: "You're not allowed" })
+                return res.status(403).json({ success: false, message: "Bạn không đủ quyền" })
             }
         })
     },

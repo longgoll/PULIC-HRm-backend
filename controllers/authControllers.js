@@ -20,7 +20,7 @@ const authControllers = {
   //tao access token
   generateAccessToken: (user) => {
     return jwt.sign(
-      { _id: user._id, email: user.email },
+      { _id: user._id, email: user.email, role: user.role },
       process.env.ACCESSTOKEN_MK,
       { expiresIn: "1d" }
     );
@@ -358,6 +358,19 @@ const authControllers = {
         success: true,
         message: langArray[langIndex].TurnOn_2FA_success,
       });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+
+  //send role
+  sendRole: async (req, res) => {
+    try {
+      return res
+        .status(200)
+        .json({ success: true, role: req.user.role, UserID: req.user._id });
     } catch (error) {
       return res
         .status(500)

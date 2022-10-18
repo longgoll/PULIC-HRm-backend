@@ -51,4 +51,7 @@ router.post(
 
 //xác thực login
 router.post("/accuracy-login", authControllers.accuracylogin);
+
+//send role
+router.get("/role", middlewareController.verifyToken, authControllers.sendRole);
 module.exports = router;

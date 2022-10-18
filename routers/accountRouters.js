@@ -12,6 +12,7 @@ router.delete('/del-user/:id', middlewareController.verifyToken, accountControll
 router.post('/lock-user/:id', middlewareController.verifyToken, accountController.lockAccount)
 //reset tài khoản
 router.post('/reset-user/:id', middlewareController.verifyToken, accountController.resetAccount)
-
+//lay thong tin
+router.get('/get-user/:id', middlewareController.verifyToken, accountController.getAccount)
 
 module.exports = router

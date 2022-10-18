@@ -28,7 +28,7 @@ router.put(
 //xóa nhan vien
 router.delete(
   "/delete-staff/:id",
-  middlewareController.verifyToken,
+  middlewareController.verifyTokenAndAdminAuth,
   staffControllers.delStaff
 );
 //lấy tất cả nhân viên

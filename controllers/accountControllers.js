@@ -71,6 +71,22 @@ const accountController = {
         .json({ success: false, message: "Vui lòng thử lại sau" });
     }
   },
+  //lay thong tin
+  getAccount: async (req, res) => {
+    const id = req.params.id;
+    try {
+      const data = await AccountModule.findById(
+        { _id: id },
+        { Name: 1, role: 1 }
+      );
+
+      return res.status(200).json({ success: true, data });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Vui lòng thử lại sau" });
+    }
+  },
 };
 
 module.exports = accountController;
