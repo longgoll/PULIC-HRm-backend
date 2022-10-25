@@ -36,7 +36,7 @@ const staffContronller = {
   createStaff: async (req, res) => {
     // const langIndex = req.lang
     const {
-      //   numberID,
+      numberID,
       familyCircumstances,
       typeCardID,
       numberNV,
@@ -152,7 +152,7 @@ const staffContronller = {
     }
 
     try {
-      //kiêm tra có bị trùng IDcard
+      // kiêm tra có bị trùng IDcard
       const Staff = await StaffModel.find({ IDcard1: IDcard1 }).count();
       if (Staff > 0) {
         return res
@@ -167,7 +167,7 @@ const staffContronller = {
           .json({ success: false, message: "Mã nhân viên tồn tại" });
       }
 
-      //
+      
       const dataCount = await countModel.findOne();
       const numberID = dataCount.CountStaffID + 1;
 
@@ -811,19 +811,19 @@ const staffContronller = {
   getGroupStaff: async (req, res) => {
     const { Company, companyBranch, department, group } = req.body;
 
-    if(!Company){
-      return res.status(401).json({message:'Vui lòng chọn công ty'})
+    if (!Company) {
+      return res.status(401).json({ message: "Vui lòng chọn công ty" });
     }
-    if(!companyBranch){
-      return res.status(401).json({message:'Vui lòng chọn chi nhánh'})
+    if (!companyBranch) {
+      return res.status(401).json({ message: "Vui lòng chọn chi nhánh" });
     }
-    if(!department){
-      return res.status(401).json({message:'Vui lòng chọn phòng ban'})
+    if (!department) {
+      return res.status(401).json({ message: "Vui lòng chọn phòng ban" });
     }
-    if(!group){
-      return res.status(401).json({message:'Vui lòng chọn nhóm'})
+    if (!group) {
+      return res.status(401).json({ message: "Vui lòng chọn nhóm" });
     }
-    
+
     try {
       const data = await StaffModel.find({
         Company,

@@ -41,6 +41,13 @@ router.get(
   statisticalControllers.birthdayGellAll
 );
 
+//sinh nhật hôm nay
+router.get(
+  "/get-birthday-today",
+  middlewareController.verifyToken,
+  statisticalControllers.birthdayToday
+);
+
 //signed contract
 router.get(
   "/get-signed-contract",
@@ -49,11 +56,10 @@ router.get(
 );
 //get all signed contract
 router.get(
-    "/get-signed-contract-all",
-    middlewareController.verifyToken,
-    statisticalControllers.SignedContractGellAll
-  );
-
+  "/get-signed-contract-all",
+  middlewareController.verifyToken,
+  statisticalControllers.SignedContractGellAll
+);
 
 
 module.exports = router;

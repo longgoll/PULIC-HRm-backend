@@ -2,6 +2,7 @@
 const StaffModel = require("../models/staffModel");
 //time
 const moment = require("moment");
+const datass = require("../data/inputdata.json");
 
 const statisticalControllers = {
   //tổng số nhân viên đang làm
@@ -19,7 +20,7 @@ const statisticalControllers = {
   //tổng số nhân viên đã nghỉ
   getNumberQuit: async (req, res) => {
     try {
-      const data = await StaffModel.find({ Working: "Nghỉ làm" }).count();
+      const data = await StaffModel.find({ Working: "Thôi việc" }).count();
 
       res.status(200).json({ success: true, data: data });
     } catch (error) {
@@ -32,7 +33,7 @@ const statisticalControllers = {
   getNumberOfficialContract: async (req, res) => {
     try {
       const data = await StaffModel.find({
-        statusWorking: "Chính thức",
+        statusWorking: "HDLD",
       }).count();
 
       res.status(200).json({ success: true, data: data });
@@ -45,7 +46,7 @@ const statisticalControllers = {
   //tổng số nhân viên HĐ thử việc
   getNumberProbationaryContracts: async (req, res) => {
     try {
-      const data = await StaffModel.find({ statusWorking: "Thử việc" }).count();
+      const data = await StaffModel.find({ statusWorking: "HDTV" }).count();
 
       res.status(200).json({ success: true, data: data });
     } catch (error) {
@@ -57,12 +58,21 @@ const statisticalControllers = {
   //sinh nhật
   birthday: async (req, res) => {
     try {
-      const d = new Date();
+      const d = new Date(1983, 01, 05);
+
       const data = await StaffModel.find({
-        $and: [
-          { DateOfBirth: { $gte: moment(d).format("YYYY-MM-DD") } },
-          { DateOfBirth: { $lte: moment(d).format("YYYY-MM-DD") } },
-        ],
+        $expr: {
+          $and: [
+            {
+              $eq: [
+                {
+                  $month: "$DateOfBirth",
+                },
+                1,
+              ],
+            },
+          ],
+        },
       }).count();
 
       return res.status(200).json({ data });
@@ -96,14 +106,57 @@ const statisticalControllers = {
     try {
       const d = new Date();
       const data = await StaffModel.find({
-        $and: [
-          { DateOfBirth: { $gte: moment(d).format("YYYY-MM-DD") } },
-          { DateOfBirth: { $lte: moment(d).format("YYYY-MM-DD") } },
-        ],
-      }, {})
+        $expr: {
+          $and: [
+            {
+              $eq: [
+                {
+                  $month: "$DateOfBirth",
+                },
+                d.getMonth(),
+              ],
+            },
+          ],
+        },
+      });
 
       return res.status(200).json({ data });
     } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: "Vui lòng thử lại sau" });
+    }
+  },
+
+  birthdayToday: async (req, res) => {
+    const d = new Date();
+    try {
+      const data = await StaffModel.find({
+        $expr: {
+          $and: [
+            {
+              $eq: [
+                {
+                  $month: "$DateOfBirth",
+                },
+                d.getMonth(),
+              ],
+            },
+            {
+              $eq: [
+                {
+                  $dayOfMonth: "$DateOfBirth",
+                },
+                d.getDate(),
+              ],
+            },
+          ],
+        },
+      });
+
+      return res.status(200).json({ data });
+    } catch (error) {
+      console.log(error);
       return res
         .status(500)
         .json({ success: false, message: "Vui lòng thử lại sau" });
@@ -119,7 +172,7 @@ const statisticalControllers = {
           { DateStartWork: { $gte: moment(d).format("YYYY-MM-DD") } },
           { DateStartWork: { $lte: moment(d).format("YYYY-MM-DD") } },
         ],
-      })
+      });
 
       return res.status(200).json({ data });
     } catch (error) {
