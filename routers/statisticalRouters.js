@@ -61,5 +61,4 @@ router.get(
   statisticalControllers.SignedContractGellAll
 );
 
-
 module.exports = router;
