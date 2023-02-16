@@ -36,6 +36,12 @@ const staffContronller = {
   createStaff: async (req, res) => {
     // const langIndex = req.lang
     const {
+      checklist1,
+      checklist2,
+      checklist3,
+      checklist4,
+      checklist5,
+      checklist6,
       numberID,
       familyCircumstances,
       typeCardID,
@@ -96,10 +102,23 @@ const staffContronller = {
         .json({ success: false, message: "Vui lòng nhập mã nhân viên" });
     }
 
+    if (numberNV.length === 12 || numberNV.length === 15) {
+    } else {
+      return res
+        .status(400)
+        .json({ success: false, message: "Mã số nhân viên phải có độ 12 hoặc 15 kí tự" });
+    }
+
     if (!nameStaff) {
       return res
         .status(400)
         .json({ success: false, message: "Vui lòng nhập tên nhân viên" });
+    }
+
+    if (!typeCardID) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Vui lòng chọn loại giấy tờ" });
     }
 
     if (!IDcard1) {
@@ -108,10 +127,31 @@ const staffContronller = {
         .json({ success: false, message: "Vui lòng nhập CCCD/CMND" });
     }
 
-    if (IDcard1.length < 9) {
+    if (typeCardID === 'CMND' && IDcard1.length !== 9) {
       return res.status(400).json({
         success: false,
-        message: "Vui lòng nhập CCCD/CMND ít nhất 9 số",
+        message: "CMND mặc định có 9 ký tự vui lòng kiểm tra lại",
+      });
+    }
+
+    if (typeCardID === 'CCCD' && IDcard1.length !== 12) {
+      return res.status(400).json({
+        success: false,
+        message: "CCCD mặc định có 12 ký tự vui lòng kiểm tra lại",
+      });
+    }
+
+    if (TaxCode && TaxCode.length !== 10) {
+      return res.status(400).json({
+        success: false,
+        message: "Mã số thuế chỉ có 10 ký tự vui lòng kiểm tra",
+      });
+    }
+
+    if (CodeBHXH && CodeBHXH.length !== 10) {
+      return res.status(400).json({
+        success: false,
+        message: "Mã số BHXH chỉ có 10 ký tự vui lòng kiểm tra",
       });
     }
 
@@ -152,26 +192,56 @@ const staffContronller = {
     }
 
     try {
-      // kiêm tra có bị trùng IDcard
-      const Staff = await StaffModel.find({ IDcard1: IDcard1 }).count();
+      //kiêm tra có bị trùng IDcard
+      const Staff = await StaffModel.find({ $and: [{ IDcard1: IDcard1 }, { Company }] }).count();
       if (Staff > 0) {
         return res
           .status(400)
-          .json({ success: false, message: "Số CCCD/CMND đã tồn tại" });
-      }
+          .json({ success: false, message: "Số CCCD/CMND đã tồn tại trong một công ty" });
+      };
 
-      const Staff01 = await StaffModel.find({ numberNV: numberNV }).count();
+      //mã nhân viên
+      const Staff01 = await StaffModel.find({ $and: [{ numberNV: numberNV }, { Company }] }).count();
       if (Staff01 > 0) {
         return res
           .status(400)
-          .json({ success: false, message: "Mã nhân viên tồn tại" });
-      }
+          .json({ success: false, message: "Mã nhân viên tồn tại trong một công ty" });
+      };
 
-      
+      //STK
+      const Staff02 = await StaffModel.find({ $and: [{ BankNumberAccount }, { Company }] }).count();
+      if (Staff02 > 0) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Số tài khoản tồn tại trong một công ty" });
+      };
+
+      //Mã số thuế
+      const Staff03 = await StaffModel.find({ $and: [{ TaxCode }, { Company }] }).count();
+      if (Staff03 > 0) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Mã số thuế tồn tại trong một công ty" });
+      };
+
+      //Mã số BHXH
+      const Staff04 = await StaffModel.find({ $and: [{ CodeBHXH }, { Company }] }).count();
+      if (Staff04 > 0) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Mã BHXH tồn tại trong một công ty" });
+      };
+
       const dataCount = await countModel.findOne();
       const numberID = dataCount.CountStaffID + 1;
 
       const newStaff = await new StaffModel({
+        checklist1,
+        checklist2,
+        checklist3,
+        checklist4,
+        checklist5,
+        checklist6,
         familyCircumstances,
         typeCardID,
         numberID,
@@ -207,7 +277,7 @@ const staffContronller = {
         CodeBHXH,
         BankNameAccount,
         BankNameUserAccount,
-        BankNumberAccount,
+        BankNumberAccount: `'${BankNumberAccount}`,
         BasicSalary,
         PaymentRateBHXH,
         RisingDayBHXH,
@@ -243,6 +313,13 @@ const staffContronller = {
   //cập nhật lại nhân viên
   updataStaff: async (req, res) => {
     const {
+      checklist1,
+      checklist2,
+      checklist3,
+      checklist4,
+      checklist5,
+      checklist6,
+      _id,
       familyCircumstances,
       typeCardID,
       numberNV,
@@ -303,10 +380,23 @@ const staffContronller = {
         .json({ success: false, message: "Vui lòng nhập mã nhân viên" });
     }
 
+    if (numberNV.length === 12 || numberNV.length === 15) {
+    } else {
+      return res
+        .status(400)
+        .json({ success: false, message: "Mã số nhân viên phải có độ 12 hoặc 15 kí tự" });
+    }
+
     if (!nameStaff) {
       return res
         .status(400)
         .json({ success: false, message: "Vui lòng nhập tên nhân viên" });
+    }
+
+    if (!typeCardID) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Vui lòng chọn loại giấy tờ" });
     }
 
     if (!IDcard1) {
@@ -315,10 +405,31 @@ const staffContronller = {
         .json({ success: false, message: "Vui lòng nhập CCCD/CMND" });
     }
 
-    if (IDcard1.length < 9) {
+    if (typeCardID === 'CMND' && IDcard1.length !== 9) {
       return res.status(400).json({
         success: false,
-        message: "Vui lòng nhập CCCD/CMND ít nhất 9 số",
+        message: "CMND mặc định có 9 ký tự vui lòng kiểm tra lại",
+      });
+    }
+
+    if (typeCardID === 'CCCD' && IDcard1.length !== 12) {
+      return res.status(400).json({
+        success: false,
+        message: "CCCD mặc định có 12 ký tự vui lòng kiểm tra lại",
+      });
+    }
+
+    if (TaxCode && TaxCode.length !== 10) {
+      return res.status(400).json({
+        success: false,
+        message: "Mã số thuế chỉ có 10 ký tự vui lòng kiểm tra",
+      });
+    }
+
+    if (CodeBHXH && CodeBHXH.length !== 10) {
+      return res.status(400).json({
+        success: false,
+        message: "Mã số BHXH chỉ có 10 ký tự vui lòng kiểm tra",
       });
     }
 
@@ -360,24 +471,53 @@ const staffContronller = {
 
     try {
       //kiêm tra có bị trùng IDcard
-      const Staff = await StaffModel.find({ IDcard1: IDcard1 }).count();
-
-      if (Staff > 1) {
+      const Staff = await StaffModel.find({ $and: [{ IDcard1: IDcard1 }, { Company }] });
+      if (Staff.length === 1 && String(Staff[0]._id) !== _id) {
         return res
           .status(400)
           .json({ success: false, message: "Số CCCD/CMND đã tồn tại" });
-      }
+      };
 
-      const Staff01 = await StaffModel.find({ numberNV: numberNV }).count();
-      if (Staff01 > 1) {
+      const Staff01 = await StaffModel.find({ $and: [{ numberNV: numberNV }, { Company }] });
+      if (Staff01.length === 1 && String(Staff01[0]._id) !== _id) {
         return res
           .status(400)
           .json({ success: false, message: "Mã nhân viên tồn tại" });
-      }
+      };
+
+      //STK
+      const Staff02 = await StaffModel.find({ $and: [{ BankNumberAccount }, { Company }] }).count();
+      if (Staff02 > 0) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Số tài khoản tồn tại trong một công ty" });
+      };
+
+      //Mã số thuế
+      const Staff03 = await StaffModel.find({ $and: [{ TaxCode }, { Company }] }).count();
+      if (Staff03 > 0) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Mã số thuế tồn tại trong một công ty" });
+      };
+
+      //Mã số BHXH
+      const Staff04 = await StaffModel.find({ $and: [{ CodeBHXH }, { Company }] }).count();
+      if (Staff04 > 0) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Mã BHXH tồn tại trong một công ty" });
+      };
 
       await StaffModel.findByIdAndUpdate(
         { _id: id },
         {
+          checklist1,
+          checklist2,
+          checklist3,
+          checklist4,
+          checklist5,
+          checklist6,
           familyCircumstances,
           typeCardID,
           numberNV,
@@ -412,7 +552,7 @@ const staffContronller = {
           CodeBHXH,
           BankNameAccount,
           BankNameUserAccount,
-          BankNumberAccount,
+          BankNumberAccount: `'${BankNumberAccount}`,
           BasicSalary,
           PaymentRateBHXH,
           RisingDayBHXH,
@@ -549,6 +689,25 @@ const staffContronller = {
   getAllSEX: async (req, res) => {
     try {
       const data = await StaffModel.find();
+
+      return res.status(200).json({ success: true, data });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+
+  //lấy tất cả nhân viên theo công ty
+  getAllSEXByCompany: async (req, res) => {
+    const { Company } = req.body;
+
+    if (!Company) {
+      return res.status(400).json({ message: "vui lòng chọn công ty trước khi xuất file" })
+    }
+
+    try {
+      const data = await StaffModel.find({ Company });
 
       return res.status(200).json({ success: true, data });
     } catch (error) {
@@ -732,6 +891,43 @@ const staffContronller = {
     try {
       const data = await StaffModel.find(
         {},
+        {
+          _id: 0,
+          numberNV: 1,
+          nameStaff: 1,
+          Company: 1,
+          companyBranch: 1,
+          department: 1,
+          group: 1,
+          BasicSalary: 1,
+          Working: 1,
+          PaymentRateBHXH: 1,
+          ExcerptBHXH: 1,
+          BankNumberAccount: 1,
+          BankNameUserAccount: 1,
+          BankNameAccount: 1,
+          familyCircumstances: 1,
+        }
+      );
+
+      return res.status(200).json({ success: true, data });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: vi.message_error });
+    }
+  },
+
+  //xuất ra file EX tùy chỉnh 01 theo công ty
+  EXcustom1ByCompany: async (req, res) => {
+    const { Company } = req.body;
+
+    if (!Company) {
+      return res.status(400).json({ message: "vui lòng chọn công ty trước khi xuất file" })
+    }
+    try {
+      const data = await StaffModel.find(
+        { Company },
         {
           _id: 0,
           numberNV: 1,

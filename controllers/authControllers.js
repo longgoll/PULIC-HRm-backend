@@ -198,6 +198,7 @@ const authControllers = {
     // console.log('co ');
     const { email, password } = req.body;
     // const langIndex = req.lang
+    // console.log(req.ip);
 
     if (!email) {
       return res

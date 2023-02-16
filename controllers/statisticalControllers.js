@@ -58,7 +58,7 @@ const statisticalControllers = {
   //sinh nhật
   birthday: async (req, res) => {
     try {
-      const d = new Date(1983, 01, 05);
+      const d = new Date();
 
       const data = await StaffModel.find({
         $expr: {
@@ -68,13 +68,12 @@ const statisticalControllers = {
                 {
                   $month: "$DateOfBirth",
                 },
-                1,
+                d.getMonth() + 1,
               ],
             },
           ],
         },
       }).count();
-
       return res.status(200).json({ data });
     } catch (error) {
       return res
@@ -113,20 +112,20 @@ const statisticalControllers = {
                 {
                   $month: "$DateOfBirth",
                 },
-                d.getMonth(),
+                d.getMonth() + 1,
               ],
             },
           ],
         },
       });
 
-      return res.status(200).json({ data });
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ success: false, message: "Vui lòng thử lại sau" });
-    }
-  },
+    return res.status(200).json({ data });
+  } catch(error) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Vui lòng thử lại sau" });
+  }
+},
 
   birthdayToday: async (req, res) => {
     const d = new Date();
@@ -139,7 +138,7 @@ const statisticalControllers = {
                 {
                   $month: "$DateOfBirth",
                 },
-                d.getMonth(),
+                d.getMonth() + 1,
               ],
             },
             {
@@ -163,24 +162,24 @@ const statisticalControllers = {
     }
   },
 
-  //get tất cả hợp đồng cần ký
-  SignedContractGellAll: async (req, res) => {
-    try {
-      const d = new Date();
-      const data = await StaffModel.find({
-        $and: [
-          { DateStartWork: { $gte: moment(d).format("YYYY-MM-DD") } },
-          { DateStartWork: { $lte: moment(d).format("YYYY-MM-DD") } },
-        ],
-      });
+    //get tất cả hợp đồng cần ký
+    SignedContractGellAll: async (req, res) => {
+      try {
+        const d = new Date();
+        const data = await StaffModel.find({
+          $and: [
+            { DateStartWork: { $gte: moment(d).format("YYYY-MM-DD") } },
+            { DateStartWork: { $lte: moment(d).format("YYYY-MM-DD") } },
+          ],
+        });
 
-      return res.status(200).json({ data });
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ success: false, message: "Vui lòng thử lại sau" });
-    }
-  },
+        return res.status(200).json({ data });
+      } catch (error) {
+        return res
+          .status(500)
+          .json({ success: false, message: "Vui lòng thử lại sau" });
+      }
+    },
 };
 
 module.exports = statisticalControllers;

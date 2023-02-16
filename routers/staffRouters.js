@@ -44,6 +44,14 @@ router.get(
   staffControllers.getAllSEX
 );
 
+//lấy tất cả nhân viên theo công ty
+router.post(
+  "/get-staff-ex-by-company",
+  middlewareController.verifyToken,
+  staffControllers.getAllSEXByCompany
+);
+
+
 //lấy tất cả nhân viên EX number
 router.get(
   "/get-staff-ex-number",
@@ -88,6 +96,13 @@ router.get(
   "/get-staff-ex-custom1",
   middlewareController.verifyToken,
   staffControllers.EXcustom1
+);
+
+//xuất EX ra những thông tin cần thiết theo công ty
+router.post(
+  "/get-staff-ex-custom1-by-company",
+  middlewareController.verifyToken,
+  staffControllers.EXcustom1ByCompany
 );
 
 //cộng số người phụ thuộc

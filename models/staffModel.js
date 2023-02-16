@@ -5,6 +5,31 @@ const Schema = mongoose.Schema;
 
 const StaffSchema = new Schema(
   {
+    //danh sách check lish
+    checklist1: {
+      type: Boolean,
+      default: false
+    },
+    checklist2: {
+      type: Boolean,
+      default: false
+    },
+    checklist3: {
+      type: Boolean,
+      default: false
+    },
+    checklist4: {
+      type: Boolean,
+      default: false
+    },
+    checklist5: {
+      type: Boolean,
+      default: false
+    },
+    checklist6: {
+      type: Boolean,
+      default: false
+    },
     //Số ID
     numberID: {
       type: Number,
