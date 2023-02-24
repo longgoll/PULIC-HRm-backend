@@ -30,6 +30,15 @@ const StaffSchema = new Schema(
       type: Boolean,
       default: false
     },
+    checklist7: {
+      type: Boolean,
+      default: false
+    },
+    //tổng số checklist đã chọn
+    checklistNumber: {
+      type: Number,
+      default: false
+    },
     //Số ID
     numberID: {
       type: Number,

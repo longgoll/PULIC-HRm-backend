@@ -42,6 +42,8 @@ const staffContronller = {
       checklist4,
       checklist5,
       checklist6,
+      checklist7,
+      checklistNumber,
       numberID,
       familyCircumstances,
       typeCardID,
@@ -242,6 +244,8 @@ const staffContronller = {
         checklist4,
         checklist5,
         checklist6,
+        checklist7,
+        checklistNumber,
         familyCircumstances,
         typeCardID,
         numberID,
@@ -319,6 +323,8 @@ const staffContronller = {
       checklist4,
       checklist5,
       checklist6,
+      checklist7,
+      checklistNumber,
       _id,
       familyCircumstances,
       typeCardID,
@@ -486,24 +492,24 @@ const staffContronller = {
       };
 
       //STK
-      const Staff02 = await StaffModel.find({ $and: [{ BankNumberAccount }, { Company }] }).count();
-      if (Staff02 > 0) {
+      const Staff02 = await StaffModel.find({ $and: [{ BankNumberAccount }, { Company }] });
+      if (Staff02.length === 1 && String(Staff02[0]._id) !== _id) {
         return res
           .status(400)
           .json({ success: false, message: "Số tài khoản tồn tại trong một công ty" });
       };
 
       //Mã số thuế
-      const Staff03 = await StaffModel.find({ $and: [{ TaxCode }, { Company }] }).count();
-      if (Staff03 > 0) {
+      const Staff03 = await StaffModel.find({ $and: [{ TaxCode }, { Company }] });
+      if (Staff03.length === 1 && String(Staff03[0]._id) !== _id) {
         return res
           .status(400)
           .json({ success: false, message: "Mã số thuế tồn tại trong một công ty" });
       };
 
       //Mã số BHXH
-      const Staff04 = await StaffModel.find({ $and: [{ CodeBHXH }, { Company }] }).count();
-      if (Staff04 > 0) {
+      const Staff04 = await StaffModel.find({ $and: [{ CodeBHXH }, { Company }] });
+      if (Staff04.length === 1 && String(Staff04[0]._id) !== _id) {
         return res
           .status(400)
           .json({ success: false, message: "Mã BHXH tồn tại trong một công ty" });
@@ -518,6 +524,8 @@ const staffContronller = {
           checklist4,
           checklist5,
           checklist6,
+          checklist7,
+          checklistNumber,
           familyCircumstances,
           typeCardID,
           numberNV,
